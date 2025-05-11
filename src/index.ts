@@ -1,4 +1,18 @@
 import { Probot } from "probot";
+import fs from "fs";
+
+// Read private key from file path if specified in environment
+if (process.env.PRIVATE_KEY_PATH) {
+  try {
+    const keyfile = process.env.PRIVATE_KEY_PATH;
+    if (fs.existsSync(keyfile)) {
+      process.env.PRIVATE_KEY = fs.readFileSync(keyfile, "utf8");
+      console.log(`Loaded private key from ${keyfile}`);
+    }
+  } catch (error) {
+    console.error("Error loading private key from file:", error);
+  }
+}
 
 export default (app: Probot) => {
   // Listen for pull request opened events

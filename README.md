@@ -10,6 +10,13 @@ This simple app automatically adds a friendly comment to pull requests when they
 # Install dependencies
 npm install
 
+# Create directory for private key
+mkdir -p .data
+
+# Save your GitHub App private key to the .data directory
+# Download this from your GitHub App's settings page
+cp /path/to/your/private-key.pem .data/private-key.pem
+
 # Build the TypeScript code
 npm run build
 
@@ -23,16 +30,16 @@ npm start
 # 1. Build container
 docker build -t custom-commentor .
 
-# 2. Start container
-docker run -e APP_ID=<app-id> -e PRIVATE_KEY=<pem-value> custom-commentor
+# 2. Start container (with private key as file)
+docker run -e APP_ID=<app-id> -e PRIVATE_KEY_PATH=/app/.data/private-key.pem -v /path/to/your/private-key.pem:/app/.data/private-key.pem custom-commentor
 ```
 
 ## Environment Variables
 
-You'll need to set these environment variables:
+You'll need to set these environment variables in your `.env` file:
 
 - `APP_ID`: The ID of your GitHub App
-- `PRIVATE_KEY`: The private key of your GitHub App
+- `PRIVATE_KEY_PATH`: Path to your GitHub App's private key file (e.g., `.data/private-key.pem`)
 - `WEBHOOK_SECRET`: The webhook secret of your GitHub App (optional)
 - `PORT`: The port to run the server on (default: 3000)
 

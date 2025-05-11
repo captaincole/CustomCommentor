@@ -36,14 +36,25 @@ npm start
 3. Run tests with `npm test`
 4. Start the bot with `npm start`
 
+## Environment Setup
+
+The application uses environment variables for configuration, which can be set in a `.env` file:
+
+- `APP_ID`: The GitHub App ID
+- `PRIVATE_KEY_PATH`: Path to the GitHub App's private key file (typically `.data/private-key.pem`)
+- `WEBHOOK_SECRET`: Secret used to verify webhook payloads
+- `PORT`: The port to run the server on (default: 3000)
+
+The private key should be stored in the `.data/private-key.pem` file, which is loaded at runtime.
+
 ## Docker Usage
 
 ```bash
 # Build container
 docker build -t custom-commentor .
 
-# Start container
-docker run -e APP_ID=<app-id> -e PRIVATE_KEY=<pem-value> custom-commentor
+# Start container with mounted private key
+docker run -e APP_ID=<app-id> -e PRIVATE_KEY_PATH=/app/.data/private-key.pem -v /path/to/your/private-key.pem:/app/.data/private-key.pem custom-commentor
 ```
 
 ## Project Structure
@@ -52,6 +63,7 @@ docker run -e APP_ID=<app-id> -e PRIVATE_KEY=<pem-value> custom-commentor
 - `test/`: Contains test files and fixtures
   - `test/index.test.ts`: Main test file with test cases
   - `test/fixtures/`: Contains mock data used in tests
+- `.data/`: Directory for storing sensitive data like private keys
 
 ## Configuration
 
